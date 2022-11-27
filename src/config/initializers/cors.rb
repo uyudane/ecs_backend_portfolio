@@ -10,7 +10,7 @@ Rails.application.config.middleware.insert_before 0, Rack::Cors do
     if Rails.env.production?
       origins "https://proadmaps.com"
     else
-      origins "http://localhost:9000"
+      origins "http://localhost:9100"
     end
 
     resource "*",
