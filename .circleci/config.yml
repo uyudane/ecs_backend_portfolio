@@ -23,7 +23,7 @@ jobs:
           # 自身のPCを指定
           DB_HOST: "127.0.0.1"
           RAILS_ENV: "test"
-      - image: cimg/mysql:8.0
+      - image: cimg/mysql:5.7
         environment:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_USER: user
