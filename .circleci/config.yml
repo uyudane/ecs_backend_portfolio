@@ -27,7 +27,7 @@ jobs:
         environment:
           MYSQL_ROOT_PASSWORD: password
           MYSQL_USER: user
-          MYSQL_HOST: db
+          MYSQL_HOST: "127.0.0.1"
           MYSQL_PASSWORD: password
           MYSQL_DATABASE: app_test
     working_directory: ~/ecs_backend/src
