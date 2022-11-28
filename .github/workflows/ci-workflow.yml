@@ -18,4 +18,4 @@ jobs:
       # 単体テストの実行部分
       - name: Unit Test
         run: cd ${{ github.workspace }}
-      - run: cd src && npm install && rspec
+      - run: cd src && bundle && rspec
