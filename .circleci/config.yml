@@ -36,7 +36,7 @@ jobs:
           path: ~/ecs_backend
       #orbsのjobでbunde install
       - ruby/install-deps
-      - run: cp .circleci/database.yml.ci config/database.yml
+      - run: cp ./circleci/database.yml.ci config/database.yml
       - run:
           name: Database setup
           command: bundle exec rails db:migrate
