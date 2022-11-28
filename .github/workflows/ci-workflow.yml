@@ -1,0 +1,21 @@
+name: CI flow for Amazon ECS
+
+# pushしたことをきっかけにworkflowが動くようにする
+on: [push]
+
+jobs:
+  ci:
+    name: ci
+    # どのDockerイメージを使うかを指定している
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      # ソースコードをワークフロー内のコンテナにコピー
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      # 単体テストの実行部分
+      - name: Unit Test
+        run: cd ${{ github.workspace }}
+      - run: cd src && npm install && rspec
