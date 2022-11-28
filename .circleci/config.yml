@@ -17,6 +17,12 @@ jobs:
   test:
     docker:
       - image: cimg/ruby:3.1
+        environment:
+          BUNDLE_JOBS: "3"
+          BUNDLE_RETRY: "3"
+          # 自身のPCを指定
+          DB_HOST: "127.0.0.1"
+          RAILS_ENV: "test"
       - image: cimg/mysql:8.0
         environment:
           MYSQL_ROOT_PASSWORD: password
@@ -24,12 +30,6 @@ jobs:
           MYSQL_HOST: db
           MYSQL_PASSWORD: password
           MYSQL_DATABASE: app_test
-    environment:
-      BUNDLE_JOBS: "3"
-      BUNDLE_RETRY: "3"
-      # 自身のPCを指定
-      DB_HOST: "127.0.0.1"
-      RAILS_ENV: test
     working_directory: ~/ecs_backend/src
     steps:
       - checkout:
