@@ -22,13 +22,13 @@ jobs:
           BUNDLE_RETRY: "3"
           # 自身のPCを指定
           DB_HOST: 127.0.0.1
-          DB_USERNAME: "root"
+          DB_USERNAME: "user"
           DB_PASSWORD: "rootpass"
           RAILS_ENV: "test"
       - image: cimg/mysql:5.7
         environment:
           MYSQL_DATABASE: "app_test"
-          MYSQL_USER: "root"
+          MYSQL_USER: "user"
           MYSQL_ROOT_PASSWORD: "rootpass"
     working_directory: ~/ecs_backend/src
     steps:
