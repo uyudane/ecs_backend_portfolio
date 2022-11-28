@@ -19,10 +19,10 @@ jobs:
       - image: cimg/ruby:3.1
       - image: cimg/mysql:5.7
         environment:
-          MYSQL_USER: user
           MYSQL_PASSWORD: password
           MYSQL_DATABASE: app_test
     environment:
+      MYSQL_USER: root
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
       # 自身のPCを指定
