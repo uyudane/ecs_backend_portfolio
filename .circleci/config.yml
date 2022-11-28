@@ -19,9 +19,10 @@ jobs:
       - image: cimg/ruby:3.1
       - image: cimg/mysql:8.0
         environment:
-          MYSQL_DATABASE: app_test
+          MYSQL_ROOT_PASSWORD: rootpw
           MYSQL_USER: root
           MYSQL_PASSWORD: password
+          MYSQL_DATABASE: app_test
     environment:
       BUNDLE_JOBS: "3"
       BUNDLE_RETRY: "3"
