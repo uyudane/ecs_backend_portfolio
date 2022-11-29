@@ -22,11 +22,13 @@ jobs:
           BUNDLE_RETRY: "3"
           # 自身のPCを指定
           DB_HOST: 127.0.0.1
+          DB_USERNAME: root
           RAILS_ENV: "test"
       - image: cimg/mysql:8.0
         command: [--default-authentication-plugin=mysql_native_password]
         environment:
           MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_HOST: 127.0.0.1
           MYSQL_DB: app_test
     working_directory: ~/ecs_backend/src
     steps:
@@ -36,7 +38,7 @@ jobs:
       - ruby/install-deps
       - run:
           name: Database setup
-          command: bundle exec rails db:create
+          command: bundle exec rails db:migrate
       - run:
           name: test
           command: bundle exec rspec
