@@ -18,8 +18,6 @@ jobs:
     docker:
       - image: cimg/ruby:3.1.2
         environment:
-          # BUNDLE_JOBS: "3"
-          # BUNDLE_RETRY: "3"
           # 自身のPCを指定
           RAILS_ENV: test
           DB_HOST: 127.0.0.1
@@ -28,6 +26,7 @@ jobs:
         # mysql8.0だと以下のコマンドが必要
         command: [--default-authentication-plugin=mysql_native_password]
         environment:
+          MYSQL_USER: root
           MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: app_test
     working_directory: ~/ecs_backend/src
