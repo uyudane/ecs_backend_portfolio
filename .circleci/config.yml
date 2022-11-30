@@ -27,8 +27,7 @@ jobs:
       - image: cimg/mysql:5.7
         command: [--default-authentication-plugin=mysql_native_password]
         environment:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
-          MYSQL_ROOT_PASSWORD: ""
+          MYSQL_ROOT_PASSWORD: password
           MYSQL_DATABASE: app_test
     working_directory: ~/ecs_backend/src
     steps:
