@@ -25,6 +25,7 @@ jobs:
           DB_HOST: 127.0.0.1
           # DB_USERNAME: root
       - image: cimg/mysql:8.0
+        # mysql8.0だと以下のコマンドが必要
         command: [--default-authentication-plugin=mysql_native_password]
         environment:
           MYSQL_ROOT_PASSWORD: password
@@ -34,9 +35,6 @@ jobs:
       - checkout:
           path: ~/ecs_backend
       #orbsのjobでbunde install
-      - run:
-          name: "waiting DB start"
-          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
       - ruby/install-deps
       - run:
           name: Database setup
