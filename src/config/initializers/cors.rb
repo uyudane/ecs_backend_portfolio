@@ -8,7 +8,7 @@
 Rails.application.config.middleware.insert_before 0, Rack::Cors do
   allow do
     if Rails.env.production?
-      origins "https://proadmaps.com"
+      origins "https://proadmaps-ecs.vercel.app"
     else
       origins "http://localhost:9100"
     end
