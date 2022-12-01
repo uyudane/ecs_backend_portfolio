@@ -66,6 +66,13 @@ jobs:
           public-registry: false
           repo: proadmaps-ecs
           tag: latest
+      - aws-ecs/deploy-service-update:
+          requires:
+            - aws-ecr/build-and-push-image
+          family: "proadmaps"
+          cluster-name: "proadmaps-cluster"
+          service-name: "proadmaps-service"
+          container-image-name-updates: "container=proadmaps-rails,tag=latest"
 
 workflows:
   version: 2
