@@ -56,17 +56,19 @@ jobs:
       # Docker コマンドを実行できるようにする
       - setup_remote_docker:
           version: 20.10.14
-      - aws-ecr/build-and-push-image: # orb built-in job
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-cli-version: latest
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          dockerfile: Dockerfile
-          region: $AWS_REGION
-          # extra-build-args: "--build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}"
-          public-registry: false
-          repo: proadmaps-ecs
-          tag: latest
+      # - aws-ecr/build-and-push-image: # orb built-in job
+      #     aws-access-key-id: AWS_ACCESS_KEY_ID
+      #     aws-cli-version: latest
+      #     aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+      #     dockerfile: Dockerfile
+      #     region: $AWS_REGION
+      #     # extra-build-args: "--build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}"
+      #     public-registry: false
+      #     repo: proadmaps-ecs
+      #     tag: latest
       - aws-ecs/deploy-service-update:
+          # requires:
+          #   - aws-ecr/build-and-push-image
           family: "proadmaps"
           cluster-name: "proadmaps-cluster"
           service-name: "proadmaps-service"
