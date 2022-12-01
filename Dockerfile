@@ -4,6 +4,9 @@ FROM ruby:3.1.2
 # ローカルでは、docker-composeでdevelopmentに上書きされる。
 ENV RAILS_ENV=production
 
+ARG RAILS_MASTER_KEY
+ENV RAILS_MASTER_KEY ${RAILS_MASTER_KEY}
+
 # 必要なライブラリのインストール、アップデート(yarn関連)
 RUN curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add - \
   && echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list \
