@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@1.1.2
-  aws-ecr: circleci/aws-ecr@8.1.0 # use the AWS ECR orb
+  aws-ecr: circleci/aws-ecr@8.1.2 # use the AWS ECR orb
   aws-ecs: circleci/aws-ecs@3.2.0 # use the AWS ECS orb
   aws-cli: circleci/aws-cli@3.1.1 # use the AWS CLI orb
 
@@ -58,6 +58,7 @@ jobs:
           aws-cli-version: latest
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           dockerfile: Dockerfile
+          region: AWS_REGION
           # extra-build-args: "--build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}"
           public-registry: false
           repo: proadmaps-ecs
