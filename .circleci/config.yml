@@ -8,8 +8,6 @@ orbs:
 workflows:
   build_test_and_deploy:
     jobs:
-      - setup_remote_docker:
-          version: 20.10.14
       - aws-ecr/build-and-push-image: # orb built-in job
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-cli-version: latest
