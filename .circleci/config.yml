@@ -8,8 +8,6 @@ orbs:
 workflows:
   build_test_and_deploy:
     jobs:
-      docker:
-        - image: cimg/ruby:3.1.2
       - setup_remote_docker:
           version: 20.10.14
       - aws-ecr/build-and-push-image: # orb built-in job
