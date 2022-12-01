@@ -25,6 +25,6 @@ workflows:
           requires:
             - aws-ecr/build-and-push-image
           family: "proadmaps"
-          cluster-name: "proadmaps-cluster"
+          cluster: "proadmaps-cluster"
           service-name: "proadmaps-service"
           container-image-name-updates: "container=proadmaps-rails,tag=latest"
