@@ -20,8 +20,6 @@ workflows:
             - ruby/install-deps
 
       - test:
-          requires:
-            - build
           docker:
             - image: cimg/ruby:3.1.2
               environment:
