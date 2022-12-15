@@ -49,6 +49,18 @@ jobs:
           name: test
           command: bundle exec rspec
 
+  aws-ecr/build-and-push-image: # orb built-in job
+    aws-access-key-id: AWS_ACCESS_KEY_ID
+    aws-cli-version: latest
+    aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+    dockerfile: Dockerfile
+    region: $AWS_REGION
+    extra-build-args: "--build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}"
+    public-registry: false
+    repo: proadmaps-ecs
+    tag: latest
+
+
 workflows:
   version: 2
   build_test:
@@ -57,3 +69,9 @@ workflows:
       - test:
           requires:
             - build
+      - aws-ecr/build-and-push-image
+          requires:
+            - test
+          filters:
+            branches:
+              only: main
