@@ -1,73 +1,56 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@1.1.2
-  aws-ecr: circleci/aws-ecr@8.1.2 # use the AWS ECR orb
-  aws-ecs: circleci/aws-ecs@3.2.0 # use the AWS ECS orb
-  aws-cli: circleci/aws-cli@3.1.1 # use the AWS CLI orb
+
+jobs:
+  build:
+    docker:
+      - image: cimg/ruby:3.1.2
+    working_directory: ~/ecs_backend/src
+    steps:
+      # gitのrepositoryをコピー
+      - checkout:
+          path: ~/ecs_backend
+      #orbsのjobでbunde install
+      - ruby/install-deps
+
+  test:
+    docker:
+      - image: cimg/ruby:3.1.2
+        environment:
+          # 自身のPCを指定
+          RAILS_ENV: test
+          DB_HOST: 127.0.0.1
+      - image: cimg/mysql:8.0
+        # mysql8.0だと以下のコマンドが必要
+        command: [--default-authentication-plugin=mysql_native_password]
+        environment:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: app_test
+    working_directory: ~/ecs_backend/src
+    steps:
+      - checkout:
+          path: ~/ecs_backend
+      #orbsのjobでbunde install
+      - run:
+          # Dockerize を使用して依存関係の待機を行う。
+          name: "waiting DB start"
+          command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
+      - ruby/install-deps
+      - run:
+          name: Database setup
+          command: |
+            bundle exec rake db:create
+            bundle exec rake db:migrate
+      - run:
+          name: test
+          command: bundle exec rspec
 
 workflows:
-  build_test_and_deploy:
+  version: 2
+  build_test:
     jobs:
-      - build:
-          docker:
-            - image: cimg/ruby:3.1.2
-          working_directory: ~/ecs_backend/src
-          steps:
-            # gitのrepositoryをコピー
-            - checkout:
-                path: ~/ecs_backend
-            #orbsのjobでbunde install
-            - ruby/install-deps
-
+      - build
       - test:
-          docker:
-            - image: cimg/ruby:3.1.2
-              environment:
-                # 自身のPCを指定
-                RAILS_ENV: test
-                DB_HOST: 127.0.0.1
-            - image: cimg/mysql:8.0
-              # mysql8.0だと以下のコマンドが必要
-              command: [--default-authentication-plugin=mysql_native_password]
-              environment:
-                MYSQL_ROOT_PASSWORD: password
-                MYSQL_DATABASE: app_test
-          working_directory: ~/ecs_backend/src
-          steps:
-            - checkout:
-                path: ~/ecs_backend
-            #orbsのjobでbunde install
-            - run:
-                # Dockerize を使用して依存関係の待機を行う。
-                name: "waiting DB start"
-                command: dockerize -wait tcp://127.0.0.1:3306 -timeout 1m
-            - ruby/install-deps
-            - run:
-                name: Database setup
-                command: |
-                  bundle exec rake db:create
-                  bundle exec rake db:migrate
-            - run:
-                name: test
-                command: bundle exec rspec
-
-      - aws-ecr/build-and-push-image: # orb built-in job
-          aws-access-key-id: AWS_ACCESS_KEY_ID
-          aws-cli-version: latest
-          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
-          dockerfile: Dockerfile
-          region: $AWS_REGION
-          extra-build-args: "--build-arg RAILS_MASTER_KEY=${RAILS_MASTER_KEY}"
-          public-registry: false
-          repo: proadmaps-ecs
-          tag: latest
-          filters:
-            branches:
-              only: main
-      - aws-ecs/deploy-service-update:
           requires:
-            - aws-ecr/build-and-push-image
-          family: "proadmaps"
-          cluster: "proadmaps-cluster"
-          service-name: "proadmaps-service"
-          container-image-name-updates: "container=proadmaps-rails,tag=latest"
+            - build
